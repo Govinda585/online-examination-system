@@ -7,6 +7,7 @@ export default class Admin extends React.Component {
   state = {
     showModel: false,
     addQuestionModel: false,
+
     examData: {
       examTitle: "",
       examDate: "",
@@ -17,6 +18,14 @@ export default class Admin extends React.Component {
     },
     errMsg: "",
     examList: [],
+    questionData: {
+      questionTitle: "",
+      option1: "",
+      option2: "",
+      option3: "",
+      option4: "",
+      answer: "option1",
+    },
   };
   // get request
 
@@ -99,7 +108,32 @@ export default class Admin extends React.Component {
       showModel: false,
     });
   };
+  onSubmitQuestion = async (e) => {
+    e.preventDefault();
+    try {
+      const { questionData } = this.state;
+      await axios.post("http://localhost:8080/add_question", questionData);
+    } catch (e) {
+      this.setState({
+        errMsg: e.error || e.massage || "Internal Server Error",
+      });
+    }
+    window.alert("question added successfully!");
+    this.setState({
+      addQuestionModel: false,
+    });
+  };
 
+  onChangeHandle1 = (e) => {
+    const { name, value } = e.target;
+    this.setState((prevState) => ({
+      ...prevState,
+      questionData: {
+        ...prevState.questionData,
+        [name]: value,
+      },
+    }));
+  };
   render() {
     const {
       showModel,
@@ -112,6 +146,12 @@ export default class Admin extends React.Component {
       wrongAnswer,
       examData,
       examList,
+      option1,
+      option2,
+      option3,
+      option4,
+      answer,
+      questionTitle,
     } = this.state;
     console.log(examData);
     return (
@@ -148,6 +188,19 @@ export default class Admin extends React.Component {
               submitForm={this.submitForm}
               onHandleCancle={this.onHandleCancle}
               examList={examList}
+              onHandleCan={() => {
+                this.setState({
+                  addQuestionModel: false,
+                });
+              }}
+              onSubmitQuestion={this.onSubmitQuestion}
+              onChangeHandle1={this.onChangeHandle1}
+              option1={option1}
+              option2={option2}
+              option3={option3}
+              option4={option4}
+              answer={answer}
+              questionTitle={questionTitle}
             />
           </Tab>
           <Tab title="User" eventKey="user">

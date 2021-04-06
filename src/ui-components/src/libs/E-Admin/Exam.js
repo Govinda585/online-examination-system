@@ -6,9 +6,17 @@ import AddQuestion from "./AddQuestion";
 import AddTable from "./AddTable";
 
 const Exam = ({
+  answer,
+  questionTitle,
+  onChangeHandle1,
+  option1,
+  option2,
+  option3,
+  option4,
+  onSubmitQuestion,
   onHandleCancle,
+  onHandleCan,
   onHandleAdd,
-  handleEdit,
   handleDelete,
   showModel,
   hideModel,
@@ -58,7 +66,19 @@ const Exam = ({
         show={addQuestionModel}
         onHide={hideAddQuestion}
         title={addQuestionTitle}
-        body={<AddQuestion></AddQuestion>}
+        body={
+          <AddQuestion
+            onHandleCan={onHandleCan}
+            onSubmitQuestion={onSubmitQuestion}
+            onChangeHandle1={onChangeHandle1}
+            option1={option1}
+            option2={option2}
+            option3={option3}
+            option4={option4}
+            answer={answer}
+            questionTitle={questionTitle}
+          ></AddQuestion>
+        }
       ></EModel>
 
       <Table striped bordered responsive size="sm">
@@ -71,8 +91,8 @@ const Exam = ({
             <th>Right Answer Mark</th>
             <th>Wrong Answer Mark</th>
             <th>Status</th>
-            <th>Question</th>
-            <th>Enroll</th>
+            <th>Add Q</th>
+            <th> View Q</th>
             <th>Result</th>
             <th>Action</th>
           </tr>
@@ -92,10 +112,13 @@ const Exam = ({
                   Add Question
                 </Button>
               </td>
-              <td>Enroll</td>
+              <td>
+                <Button variant="success" size="sm">
+                  View Question
+                </Button>
+              </td>
               <td>Result</td>
               <td>
-                <Button onClick={handleEdit}>Edit</Button>{" "}
                 <Button variant="danger" onClick={() => handleDelete(list.id)}>
                   Delete
                 </Button>
